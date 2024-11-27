@@ -10,10 +10,15 @@ services:
       - mysql
     environment:
       - FLASK_ENV=development
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USER=aditya
+      - MYSQL_PASSWORD=dictionarypassword
+      - MYSQL_DB=posts
       - SQLALCHEMY_DATABASE_URI=mysql+pymysql://aditya:dictionarypassword@mysql:3306/posts
-
     networks:
       - app-network
+    command: ["/wait.sh", "mysql:3306", "--", "python", "main.py"]
   mysql:
     image: mysql:8.0
     container_name: mysql
