@@ -21,5 +21,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 5002
 
 # Run the application
-CMD ["/wait.sh", "mysql:3306", "--", "python", "main.py", "--host=0.0.0.0", "--port=5000"]
+CMD ["/wait.sh", "mysql:3306", "--", "python", "main.py"]
 
