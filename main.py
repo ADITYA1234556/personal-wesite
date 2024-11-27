@@ -1,7 +1,8 @@
 from datetime import date
 import pymysql
 pymysql.install_as_MySQLdb()
-from flask import Flask, abort, render_template, redirect, url_for, flash
+import smtplib
+from flask import Flask, abort, render_template, redirect, url_for, flash, request
 from flask_bootstrap import Bootstrap5
 from flask_ckeditor import CKEditor
 from flask_gravatar import Gravatar
@@ -13,6 +14,9 @@ from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 # Import your forms from the forms.py
 from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm
+
+# my_email = "EMAILANDPASSWORDMADE SECURE"
+# PASSWORD = "############"
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
@@ -222,8 +226,15 @@ def about():
     return render_template("about.html", current_user=current_user)
 
 
-@app.route("/contact")
+@app.route("/contact", methods = ["GET", "POST"])
 def contact():
+    # if request.method == "POST":
+    #     with smtplib.SMTP("smtp.gmail.com") as connection:
+    #         connection.starttls()
+    #         connection.login(user=my_email, password=PASSWORD)
+    #         connection.sendmail(from_addr=my_email, to_addrs="SECURE@gmail.com",
+    #                             msg=f"Subject:User details added\n\n {}")
+    #         connection.close()
     return render_template("contact.html", current_user=current_user)
 
 
