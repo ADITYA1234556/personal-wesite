@@ -23,11 +23,11 @@ spec:
           - name: MYSQL_ROOT_PASSWORD
             value: rootpassword
           - name: MYSQL_DATABASE
-            value: admin
+            value: posts
           - name: MYSQL_USER
-            value: adi
+            value: aditya
           - name: MYSQL_PASSWORD
-            value: admin
+            value: dictionarypassword
         ports:
         - containerPort: 3306
         volumeMounts:
