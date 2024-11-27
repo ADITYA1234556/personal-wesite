@@ -35,7 +35,7 @@ def load_user(user_id):
 # CREATE DATABASE
 class Base(DeclarativeBase):
     pass
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://aditya:dictionarypassword@mysql:3306/posts'
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
