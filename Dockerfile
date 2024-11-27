@@ -5,6 +5,8 @@ FROM python:3.10-slim
 WORKDIR /app
 
 # Copy the current directory contents into the container at /app
+COPY wait.sh /wait.sh
+RUN chmod +x /wait.sh
 COPY . /app
 
 # Install system dependencies
@@ -19,4 +21,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 5002
 
 # Run the application
-CMD ["python", "main.py"]
+CMD ["/wait.sh", "mysql-service:3306", "--", "python", "main.py", "--host=0.0.0.0", "--port=5000"]
+

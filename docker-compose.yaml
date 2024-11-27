@@ -7,10 +7,12 @@ services:
     volumes:
       - .:/app
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     environment:
       - FLASK_ENV=development
       - SQLALCHEMY_DATABASE_URI=mysql+pymysql://aditya:dictionarypassword@mysql:3306/posts
+
     networks:
       - app-network
   mysql:
