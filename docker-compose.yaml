@@ -7,8 +7,7 @@ services:
     volumes:
       - .:/app
     depends_on:
-      mysql:
-        condition: service_healthy
+      - mysql
     environment:
       - FLASK_ENV=development
       - SQLALCHEMY_DATABASE_URI=mysql+pymysql://aditya:dictionarypassword@mysql:3306/posts
