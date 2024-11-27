@@ -11,5 +11,5 @@ spec:
   persistentVolumeReclaimPolicy: Retain  # Ensure data is not deleted when PV is released
   storageClassName: standard
   hostPath:
-    path: /mnt/data/mysql # Update with the appropriate path for your EKS worker node
+    path: /home/mysql # Update with the appropriate path for your EKS worker node
     type: DirectoryOrCreate
