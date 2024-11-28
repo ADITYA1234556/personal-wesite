@@ -16,8 +16,14 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # Import your forms from the forms.py
 from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm
 
-MYEMAIL = os.getenv("MYEMAIL", "")
-PASSWORD = os.getenv("PASSWORD", "")
+MYEMAIL = os.getenv("MYEMAIL")
+PASSWORD = os.getenv("PASSWORD")
+
+if not MYEMAIL or not PASSWORD:
+    print("Environment variables are missing!")
+else:
+    print(f"Email: {MYEMAIL}")
+    print(f"Password: {PASSWORD}")
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
@@ -236,13 +242,17 @@ def contact():
         message = request.form.get("message")
         phone = request.form.get("phone")
         print(name)
-        with smtplib.SMTP("smtp.gmail.com") as connection:
-            connection.starttls()
-            connection.login(user=MYEMAIL, password=PASSWORD)
-            connection.sendmail(from_addr=MYEMAIL, to_addrs="adityanavaneethan98@gmail.com",
-                                msg=f"Subject:User details added\n\n Username: {name} \n User Email: {email} \n "
-                                    f"User Phone: {phone} \n Message from the user: {message}")
-            connection.close()
+        try:
+            with smtplib.SMTP("smtp.gmail.com") as connection:
+                connection.starttls()
+                connection.login(user=MYEMAIL, password=PASSWORD)
+                connection.sendmail(from_addr=MYEMAIL, to_addrs="adityanavaneethan98@gmail.com",
+                                    msg=f"Subject:User details added\n\n Username: {name} \n User Email: {email} \n "
+                                        f"User Phone: {phone} \n Message from the user: {message}")
+                connection.close()
+        except Exception as e:
+            print(f"Error: {e}")
+
     return render_template("contact.html", current_user=current_user)
 
 
