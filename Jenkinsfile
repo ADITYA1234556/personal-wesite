@@ -96,7 +96,7 @@ pipeline {
 
                     // Deploy Flask app and MySQL to Kubernetes
                     sh 'KUBECONFIG=$KUBE_CONFIG kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.1.3/deploy/static/provider/aws/deploy.yaml'
-'                   sh 'KUBECONFIG=$KUBE_CONFIG kubectl apply -f $WORKSPACE/ingress.yaml'
+                    sh 'KUBECONFIG=$KUBE_CONFIG kubectl apply -f $WORKSPACE/ingress.yaml'
                     sh 'KUBECONFIG=$KUBE_CONFIG kubectl apply -f $WORKSPACE/persistentvolume.yaml -n ${KUBE_NAMESPACE}'
                     sh 'KUBECONFIG=$KUBE_CONFIG kubectl apply -f $WORKSPACE/persistentvolumeclaim.yaml -n ${KUBE_NAMESPACE}'
                     sh 'KUBECONFIG=$KUBE_CONFIG kubectl apply -f $WORKSPACE/mysql-deployment-updated.yaml -n ${KUBE_NAMESPACE}'
