@@ -236,6 +236,8 @@ def about():
 
 @app.route("/contact", methods = ["GET", "POST"])
 def contact():
+    MYEMAIL = os.getenv("MYEMAIL")
+    PASSWORD = os.getenv("PASSWORD")
     if request.method == "POST":
         name = request.form.get("name")
         email = request.form.get("email")
@@ -243,7 +245,7 @@ def contact():
         phone = request.form.get("phone")
         print(name)
         try:
-            with smtplib.SMTP("smtp.gmail.com") as connection:
+            with smtplib.SMTP("smtp.gmail.com", 587) as connection:
                 connection.starttls()
                 connection.login(user=MYEMAIL, password=PASSWORD)
                 connection.sendmail(from_addr=MYEMAIL, to_addrs="adityanavaneethan98@gmail.com",
@@ -251,10 +253,14 @@ def contact():
                                         f"User Phone: {phone} \n Message from the user: {message}")
                 connection.close()
         except Exception as e:
-            print(f"Error: {e}")
+            print(f"Error sending email: {e}")
+            return f"Error sending email: {e}", 500
+
 
     return render_template("contact.html", current_user=current_user)
 
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True, port=5002)
+
+
