@@ -85,9 +85,6 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'aws-credentials-id',
                                                        usernameVariable: 'AWS_ACCESS_KEY_ID',
                                                        passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
-                    // Check if kubeconfig file exists and display first 20 lines to verify it
-                    sh 'ls -l $KUBE_CONFIG'
-                    sh 'head -n 20 $KUBE_CONFIG'
 
                     // Set the KUBECONFIG environment variable and apply the Kubernetes manifests
                     sh 'export KUBECONFIG=$KUBE_CONFIG'
@@ -98,6 +95,8 @@ pipeline {
                     sh ' envsubst < $WORKSPACE/flask-dep.yaml > $WORKSPACE/flask-deployment-updated.yaml'
 
                     // Deploy Flask app and MySQL to Kubernetes
+                    sh 'KUBECONFIG=$KUBE_CONFIG kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.1.3/deploy/static/provider/aws/deploy.yaml'
+'                   sh 'KUBECONFIG=$KUBE_CONFIG kubectl apply -f $WORKSPACE/ingress.yaml'
                     sh 'KUBECONFIG=$KUBE_CONFIG kubectl apply -f $WORKSPACE/persistentvolume.yaml -n ${KUBE_NAMESPACE}'
                     sh 'KUBECONFIG=$KUBE_CONFIG kubectl apply -f $WORKSPACE/persistentvolumeclaim.yaml -n ${KUBE_NAMESPACE}'
                     sh 'KUBECONFIG=$KUBE_CONFIG kubectl apply -f $WORKSPACE/mysql-deployment-updated.yaml -n ${KUBE_NAMESPACE}'

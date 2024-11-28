@@ -28,7 +28,7 @@ kind: Service
 metadata:
   name: flask-app-service
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: flask-app
   ports:
