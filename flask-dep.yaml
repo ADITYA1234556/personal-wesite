@@ -17,6 +17,11 @@ spec:
         image: adityahub2255/flask-app:$DOCKER_TAG
         ports:
         - containerPort: 5002
+        env:
+          - name: MYEMAIL
+            value: "${MYEMAIL}"
+          - name: PASSWORD
+            value: "${PASSWORD}"
 ---
 apiVersion: v1
 kind: Service

@@ -4,6 +4,14 @@ FROM python:3.10-slim
 # Set the working directory in the container
 WORKDIR /app
 
+# Accept build-time arguments
+ARG MYEMAIL
+ARG PASSWORD
+
+# Set environment variables inside the container
+ENV MYEMAIL=${MYEMAIL}
+ENV PASSWORD=${PASSWORD}
+
 # Copy the current directory contents into the container at /app
 COPY wait.sh /wait.sh
 RUN chmod +x /wait.sh

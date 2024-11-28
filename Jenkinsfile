@@ -11,6 +11,8 @@ pipeline {
         DOCKER_TAG = "${GIT_COMMIT}" // Tag Docker images with the git commit ID
         KUBE_CONFIG = "/tmp/kubeconfig"
         PROJECT_NAME = "flask-mysql"
+        MYEMAIL = credentials('MYEMAIL') // Reference Jenkins credentials
+        PASSWORD = credentials('PASSWORD')
     }
     stages {
         stage('Fetch Code') {
@@ -24,7 +26,7 @@ pipeline {
         stage('Docker compose down'){
             steps{
                 script {
-                    sh 'docker-compose down --remove-orphans'
+                    sh 'docker-compose -f $WORKSPACE/docker-compose-updated.yaml down --remove-orphans'
                 }
             }
         }
@@ -32,8 +34,10 @@ pipeline {
         stage('Run Docker Compose build') {
             steps {
                 script {
+                    sh 'envsubst < $WORKSPACE/docker-compose.yaml > $WORKSPACE/docker-compose-updated.yaml'
+                    sh 'cat $WORKSPACE/docker-compose-updated.yaml'
                     // Use Docker Compose to build and start the services defined in docker-compose.yaml
-                    sh 'docker-compose -f $WORKSPACE/docker-compose.yaml up --build -d'
+                    sh 'docker-compose -f $WORKSPACE/docker-compose-updated.yaml up --build -d'
                 }
             }
         }
@@ -51,7 +55,7 @@ pipeline {
             steps {
                 script {
                     // Build the Flask Docker image
-                    docker.build("${DOCKER_IMAGE_FLASK}:${DOCKER_TAG}", ".")
+                    docker.build("${DOCKER_IMAGE_FLASK}:${DOCKER_TAG}", "--build-arg MYEMAIL=${MYEMAIL} --build-arg PASSWORD=${PASSWORD} .")
                 }
             }
         }

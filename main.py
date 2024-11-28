@@ -1,6 +1,7 @@
 from datetime import date
 import pymysql
 pymysql.install_as_MySQLdb()
+import os
 import smtplib
 from flask import Flask, abort, render_template, redirect, url_for, flash, request
 from flask_bootstrap import Bootstrap5
@@ -15,8 +16,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # Import your forms from the forms.py
 from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm
 
-# my_email = "EMAILANDPASSWORDMADE SECURE"
-# PASSWORD = "############"
+MYEMAIL = os.getenv("MYEMAIL", "")
+PASSWORD = os.getenv("PASSWORD", "")
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
@@ -42,6 +43,7 @@ def load_user(user_id):
 class Base(DeclarativeBase):
     pass
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://aditya:dictionarypassword@mysql:3306/posts'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
@@ -228,13 +230,19 @@ def about():
 
 @app.route("/contact", methods = ["GET", "POST"])
 def contact():
-    # if request.method == "POST":
-    #     with smtplib.SMTP("smtp.gmail.com") as connection:
-    #         connection.starttls()
-    #         connection.login(user=my_email, password=PASSWORD)
-    #         connection.sendmail(from_addr=my_email, to_addrs="SECURE@gmail.com",
-    #                             msg=f"Subject:User details added\n\n {}")
-    #         connection.close()
+    if request.method == "POST":
+        name = request.form.get("name")
+        email = request.form.get("email")
+        message = request.form.get("message")
+        phone = request.form.get("phone")
+        print(name)
+        with smtplib.SMTP("smtp.gmail.com") as connection:
+            connection.starttls()
+            connection.login(user=MYEMAIL, password=PASSWORD)
+            connection.sendmail(from_addr=MYEMAIL, to_addrs="adityanavaneethan98@gmail.com",
+                                msg=f"Subject:User details added\n\n Username: {name} \n User Email: {email} \n "
+                                    f"User Phone: {phone} \n Message from the user: {message}")
+            connection.close()
     return render_template("contact.html", current_user=current_user)
 
 
