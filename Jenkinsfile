@@ -26,7 +26,7 @@ pipeline {
         stage('Docker compose down'){
             steps{
                 script {
-                    sh 'docker-compose -f $WORKSPACE/docker-compose-updated.yaml down --remove-orphans'
+                    sh 'docker-compose -f $WORKSPACE/docker-compose.yaml down --remove-orphans'
                 }
             }
         }
