@@ -19,9 +19,9 @@ services:
       - MYSQL_HOST=mysql
       - MYSQL_PORT=3306
       - MYSQL_USER=aditya
-      - MYSQL_PASSWORD=dictionarypassword
+      - MYSQL_PASSWORD=Admin12345
       - MYSQL_DB=posts
-      - SQLALCHEMY_DATABASE_URI=mysql+pymysql://aditya:dictionarypassword@mysql:3306/posts
+      - SQLALCHEMY_DATABASE_URI=mysql+pymysql://aditya:Admin12345@mysql:3306/posts
     networks:
       - app-network
     command: ["/wait.sh", "mysql:3306", "--", "python", "main.py"]
@@ -33,7 +33,7 @@ services:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: posts
       MYSQL_USER: aditya
-      MYSQL_PASSWORD: dictionarypassword
+      MYSQL_PASSWORD: Admin12345
     ports:
       - "3306:3306"
     volumes:
